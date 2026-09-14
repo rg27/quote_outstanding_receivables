@@ -12,46 +12,22 @@ ZOHO.embeddedApp.on("PageLoad", async (entity) => {
     console.log("RAW PageLoad Entity Object:", entity);
 
     try {
-        let entity_id = null;
+        let outstandingAmount = null;
 
-        // Extract recordId directly from the flyout context data object
-        if (entity && entity.data && entity.data.recordId) {
-            entity_id = entity.data.recordId;
-        } 
-        else if (entity) {
-            if (Array.isArray(entity.EntityId) && entity.EntityId.length > 0) {
-                entity_id = entity.EntityId[0];
-            } else if (entity.recordId) {
-                entity_id = entity.recordId;
+        // Extract outstanding_receivable directly from the flyout context data object
+        if (entity && entity.data && entity.data.outstanding_receivable !== undefined) {
+            outstandingAmount = entity.data.outstanding_receivable;
+        } else {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramValue = urlParams.get("outstanding_receivable");
+            if (paramValue !== null) {
+                outstandingAmount = paramValue;
             }
         }
 
-        if (!entity_id) {
-            const urlParams = new URLSearchParams(window.location.search);
-            entity_id = urlParams.get("recordId") || urlParams.get("id") || urlParams.get("entityId");
+        if (outstandingAmount === null) {
+            throw new Error("Unable to identify Outstanding Receivable value from Flyout data.");
         }
-
-        if (!entity_id) {
-            throw new Error("Unable to identify Record ID from Flyout data.");
-        }
-
-        // Fetch Current User
-        ZOHO.CRM.CONFIG.getCurrentUser().then(function(data){
-            console.log("Current User Data Raw:", data);
-        });
-
-        const record_response = await ZOHO.CRM.API.getRecord({ 
-            Entity: "Quotes", 
-            approved: "both", 
-            RecordID: entity_id 
-        });
-
-        if (!record_response || !record_response.data) {
-            throw new Error("Quote record not found.");
-        }
-        
-        const record_data = record_response.data[0];
-        const outstandingAmount = record_data.Outstanding_Receivables || 0;
 
         const valueElement = document.getElementById("receivables-value");
         valueElement.textContent = Number(outstandingAmount).toLocaleString('en-US', {
