@@ -7,8 +7,8 @@
     <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
   </head>
-  <body class="bg-transparent text-gray-800 antialiased font-sans flex items-center justify-center h-full p-0 overflow-hidden relative" style="margin: 0; padding: 0;">
-    
+  <body class="bg-transparent text-gray-800 antialiased font-sans flex items-center justify-center h-screen p-0 overflow-hidden relative" style="margin: 0; padding: 0;">
+
     <div id="loader-overlay" class="fixed inset-0 bg-white/80 z-[999] hidden flex-col items-center justify-center backdrop-blur-md">
       <div class="relative flex items-center justify-center">
         <div class="absolute w-8 h-8 border-2 border-indigo-500/20 rounded-full"></div>
@@ -20,15 +20,14 @@
     </div>
 
     <!-- Container with Dynamic Floating Orbs Background -->
-    <div class="relative w-full max-w-[320px] flex items-center justify-center" style="margin-top: -1px;">
-      
+    <div class="relative w-full max-w-[320px] flex items-center justify-center">
+
       <!-- Moving Ambient Orbs Behind the Card -->
       <div class="absolute -top-1 left-4 w-12 h-12 bg-indigo-400/25 rounded-full blur-lg animate-orbit-1 pointer-events-none"></div>
       <div class="absolute -bottom-1 right-4 w-14 h-14 bg-purple-400/25 rounded-full blur-lg animate-orbit-2 pointer-events-none"></div>
 
       <!-- Rotating Glowing Border Card -->
       <div class="relative w-full p-[1.5px] rounded-lg overflow-hidden shadow-md shadow-indigo-500/10 animate-float-card group z-10">
-        <!-- Moving Conic/Linear Gradient Glow Animation -->
         <div class="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-border-glow"></div>
 
         <!-- Inner Glass Card Content -->
@@ -51,12 +50,13 @@
       </div>
     </div>
 
-    <div class="fixed inset-0 bg-slate-900/50 z-[1000] hidden flex items-center justify-center p-3 backdrop-blur-sm" id="popup" data-status="">
+    <!-- Popup (only "hidden" in markup; JS toggles hidden/flex) -->
+    <div class="fixed inset-0 bg-slate-900/50 z-[1000] hidden items-center justify-center p-3 backdrop-blur-sm" id="popup" data-status="">
       <div class="bg-white rounded-lg p-3 text-center shadow-xl w-full max-w-[220px] border border-slate-100 animate-slide-up">
-        <div id="statusIcon" class="mx-auto flex items-center justify-center h-7 w-7 rounded-full mb-1.5"></div>
+        <div id="statusIcon" class="mx-auto flex items-center justify-center h-8 w-8 rounded-full mb-2"></div>
         <h3 id="popupTitle" class="text-[11px] font-bold text-slate-900 mb-0.5">Notification</h3>
         <p id="popupMessage" class="text-[9px] text-slate-500 leading-relaxed mb-2.5"></p>
-        <button type="button" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-md text-[9px] transition-colors" id="closeBtn" onclick="ZOHO.CRM.UI.Popup.close()">Close</button>
+        <button type="button" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-md text-[9px] transition-colors" id="closeBtn" onclick="hidePopup()">Close</button>
       </div>
     </div>
 
